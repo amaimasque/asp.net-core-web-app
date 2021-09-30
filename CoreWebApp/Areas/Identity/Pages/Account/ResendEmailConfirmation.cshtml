@@ -1,0 +1,37 @@
+﻿@page
+@model ResendEmailConfirmationModel
+@{
+    ViewData["Title"] = "Resend email confirmation";
+}
+<section class="contact-section pb-50 pt-100">
+    <div class="container" style="padding: 0 20%">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="contact-form-wrapper">
+                    <div class="row">
+                        <div class="col-xl-10 col-lg-8 mx-auto">
+                            <div class="section-title text-center mb-50">
+                                <span class="wow fadeInDown" data-wow-delay=".2s">Before logging in...</span>
+                                <h3 class="wow fadeInUp" data-wow-delay=".4s">@ViewData["Title"]</h3>
+                                <p class="wow fadeInUp" data-wow-delay=".6s">At vero eos et accusamus et iusto odio dignissimos ducimus quiblanditiis praesentium</p>
+                            </div>
+                        </div>
+                    </div>
+                    <form method="post" style="text-align: center">
+                        <div asp-validation-summary="ModelOnly" class="text-danger pb-2"></div>
+                        <div class="form-group">
+                            <label asp-for="Input.Email"></label>
+                            <input asp-for="Input.Email" class="form-control" />
+                            <span asp-validation-for="Input.Email" class="text-danger pt-2"></span>
+                        </div>
+                        <button type="submit" class="theme-btn">Resend</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        @section Scripts {
+            <partial name="_ValidationScriptsPartial" />
+        }

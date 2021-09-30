@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>aspnet-CoreWebApp-F9E8B40F-CC81-4EF8-AEC4-785688798263</UserSecretsId>
+    <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="bower.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\fonts\LineIcons.svg" />
+    <None Include="wwwroot\fonts\LineIcons.woff2" />
+    <None Include="wwwroot\img\.DS_Store" />
+    <None Include="wwwroot\img\about\.DS_Store" />
+    <None Include="wwwroot\img\bg\.DS_Store" />
+    <None Include="wwwroot\img\bg\common-bg.svg" />
+    <None Include="wwwroot\img\client-logo\.DS_Store" />
+    <None Include="wwwroot\img\client-logo\graygrids-logo.svg" />
+    <None Include="wwwroot\img\client-logo\lineicons-logo.svg" />
+    <None Include="wwwroot\img\client-logo\pagebulb-logo.svg" />
+    <None Include="wwwroot\img\client-logo\uideck-logo.svg" />
+    <None Include="wwwroot\img\hero\.DS_Store" />
+    <None Include="wwwroot\img\hero\dots.shape.svg" />
+    <None Include="wwwroot\img\logo\logo.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="bootstrap" Version="5.1.0" />
+    <PackageReference Include="MailKit" Version="2.15.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="MimeKit" Version="2.15.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModel\" />
+  </ItemGroup>
+
+</Project>

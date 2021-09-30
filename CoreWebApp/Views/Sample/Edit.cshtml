@@ -1,0 +1,60 @@
+﻿@model CoreWebApp.Models.EmployeeModel
+
+<section class="contact-section pb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="contact-form-wrapper">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1" asp-for="Name">Name</label>
+                            <input class="form-control" asp-for="Name">
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Position</label>
+                            <select asp-for="Position" class="form-control" id="exampleFormControlSelect1">
+                                <option>Developer</option>
+                                <option>Solutions Architect</option>
+                                <option>Chief Technology Officer</option>
+                                <option>Operations Manager</option>
+                                <option>Team Lead</option>
+                            </select>
+                            <span asp-validation-for="Position" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Office" for="exampleFormControlTextarea1">Office</label>
+                            <textarea asp-for="Office" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <span asp-validation-for="Office" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="StartDate" for="simpleDataInput">Start Date</label>
+                            <div class="input-group date" id="inputDate">
+                                <input asp-for="StartDate" class="form-control" value="@Model.StartDate" id="simpleDataInput" type="date">
+                            </div>
+                            <span asp-validation-for="StartDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Salary" for="exampleInputEmail1">Salary</label>
+                            <input asp-for="Salary" class="form-control" id="salary">
+                            <span asp-validation-for="Salary" class="text-danger"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <a href="/sample/index" class="theme-btn">Back</a>
+                            </div>
+                            <div class="col-lg-5">
+                                <button type="submit" class="theme-btn btn-block">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+   
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
