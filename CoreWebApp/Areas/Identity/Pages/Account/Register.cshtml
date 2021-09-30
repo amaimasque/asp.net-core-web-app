@@ -1,0 +1,49 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+<section class="contact-section pb-100">
+    <div class="container" style="padding: 0 20%">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="contact-form-wrapper">
+                    <div class="row">
+                        <div class="col-xl-10 col-lg-8 mx-auto">
+                            <div class="section-title text-center mb-50">
+                                <span class="wow fadeInDown" data-wow-delay=".2s">Join our platform</span>
+                                <h2 class="wow fadeInUp" data-wow-delay=".4s">Create Your Account</h2>
+                                <p class="wow fadeInUp" data-wow-delay=".6s">At vero eos et accusamus et iusto odio dignissimos ducimus quiblanditiis praesentium</p>
+                            </div>
+                        </div>
+                    </div>
+                    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <input class="form-control" placeholder="Username" required asp-for="Input.UserName">
+                        <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                        <input class="form-control" placeholder="First name" required asp-for="Input.FirstName">
+                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                        <input class="form-control" placeholder="Last name" required asp-for="Input.LastName">
+                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                        <input class="form-control" placeholder="Email address" required asp-for="Input.Email">
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        <input class="form-control" placeholder="Password" required asp-for="Input.Password">
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        <input class="form-control" placeholder="Retype password" required asp-for="Input.ConfirmPassword">
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="button text-center">
+                                    <button type="submit" class="theme-btn">REGISTER</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

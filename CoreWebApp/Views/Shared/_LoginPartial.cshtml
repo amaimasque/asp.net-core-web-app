@@ -1,0 +1,74 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <ul class="navbar-nav ms-autos authenticated-nav" id="nav" style="width: 100%">
+        <li class="nav-item my-lg-3">
+            <a class="nav-link text-dark" href="/identity/account/manage">Hi @User.Identity.Name!</a>
+            @if (UserManager.GetUserAsync(User).Result.ProfilePicture != null)
+            {
+                <img class="img-thumbnail d-inline" style="width:40px;height:40px; object-fit:cover; border-radius:30px" src="data:image/*;base64,@(Convert.ToBase64String(UserManager.GetUserAsync(User).Result.ProfilePicture))">
+            }
+        </li>
+        <li class="nav-item my-lg-3">
+            <a class="nav-link text-dark" href="/sample">Employee List</a>
+        </li>
+        <li class="nav-item my-lg-3">
+            <a class="nav-link text-dark" href="/roles">Role Manager</a>
+        </li>
+        <li class="nav-item my-lg-3">
+            <a class="nav-link text-dark" href="/users">Users Management</a>
+        </li>
+        <li class="nav-item my-3 float-lg-right">
+            <!--<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="theme-btn btn-identity px-5">Logout</button>
+            </form>-->
+            <button type="button" class="theme-btn btn-identity px-5" data-toggle="modal" data-target="#logoutModal">Logout</button>
+        </li>
+    </ul>
+}
+else
+{
+    <ul id="nav" class="navbar-nav ms-autos unauthenticated-nav">
+        <li class="nav-item my-lg-3">
+            <a class="page-scroll" href="#home">Home</a>
+        </li>
+        <li class="nav-item my-lg-3">
+            <a class="page-scroll" href="#about">About</a>
+        </li>
+        <li class="nav-item my-lg-3">
+            <a class="page-scroll" href="#service">Service</a>
+        </li>
+        <li class="nav-item my-lg-3">
+            <a class="page-scroll" href="#contact">Contact</a>
+        </li>
+        <form action="#" class="search-form form-inline my-2 my-lg-4" style="margin-left: 150px;">
+            <input type="text" class="mr-sm-2" placeholder="Search">
+            <button type="submit"><i class="lni lni-search-alt"></i></button>
+        </form>
+        <li class="nav-item my-3 ml-2">
+            <a class="theme-btn btn-identity px-5" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item my-3 ml-2">
+            <!--<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>-->
+            <a asp-area="Identity" asp-page="/Account/Login" class="theme-btn btn-identity px-5">Login</a>
+        </li>
+    </ul>
+        
+}
+
+<style>
+    .btn-identity {
+        border: 1px solid #675AE9;
+        background: #fff;
+        border-radius: 50px;
+        transition: all 0.3s ease-out 0s;
+        color: #675AE9 !important;
+    }
+    .authenticated-nav .nav-item {
+        width: 10vw;
+        text-align: center;
+    }
+</style>

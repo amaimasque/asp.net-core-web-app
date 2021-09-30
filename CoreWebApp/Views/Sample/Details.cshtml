@@ -1,0 +1,87 @@
+﻿@model CoreWebApp.Models.EmployeeModel
+
+<section class="contact-section pb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="contact-form-wrapper">
+                    <form>
+                        <fieldset disabled>
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" asp-for="Name">Name</label>
+                                <input class="form-control" asp-for="Name">
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">Position</label>
+                                <select asp-for="Position" class="form-control" id="exampleFormControlSelect1">
+                                    <option>Developer</option>
+                                    <option>Solutions Architect</option>
+                                    <option>Chief Technology Officer</option>
+                                    <option>Operations Manager</option>
+                                    <option>Team Lead</option>
+                                </select>
+                                <span asp-validation-for="Position" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Office" for="exampleFormControlTextarea1">Office</label>
+                                <textarea asp-for="Office" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <span asp-validation-for="Office" class="text-danger"></span>
+                            </div>
+                            <div class="form-group" id="simple-date1">
+                                <label asp-for="StartDate" for="simpleDataInput">Start Date</label>
+                                <div class="input-group date">
+                                    <input asp-for="StartDate" class="form-control" value="@Model.StartDate" id="simpleDataInput" type="date">
+                                </div>
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Salary" for="exampleInputEmail1">Salary</label>
+                                <input asp-for="Salary" class="form-control" id="salary">
+                                <span asp-validation-for="Salary" class="text-danger"></span>
+                            </div>
+                        </fieldset>
+                    </form>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <a href="/sample/index" class="theme-btn">Back</a>
+                        </div>
+                        <div class="col-lg-5">
+                            <button type="button" class="theme-btn btn-block" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                        </div>
+                        <div class="col-lg-5">
+                            <a href="/sample/edit/@Model.ID" class="theme-btn btn-block">Edit</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+  
+
+<!-- Modal Delete -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="modalLogoutLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLogoutLabel">Confirm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this record?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="theme-btn btn-identity px-5" data-dismiss="modal">No</button>
+                <form asp-action="Delete" class="form-inline" >
+                    <input type="hidden" asp-for="ID" />
+                    <input type="submit" value="Yes" class="theme-btn btn-identity px-5" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

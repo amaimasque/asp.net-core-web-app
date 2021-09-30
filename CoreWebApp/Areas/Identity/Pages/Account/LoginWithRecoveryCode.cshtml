@@ -1,0 +1,40 @@
+﻿@page
+@model LoginWithRecoveryCodeModel
+@{
+    ViewData["Title"] = "Recovery code verification";
+}
+<section class="contact-section pb-50 pt-50">
+    <div class="container" style="padding: 0 20%">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="contact-form-wrapper">
+                    <div class="row">
+                        <div class="col-xl-10 col-lg-8 mx-auto">
+                            <div class="section-title text-center mb-50">
+                                <span class="wow fadeInDown" data-wow-delay=".2s">Continue logging in</span>
+                                <h3 class="wow fadeInUp" data-wow-delay=".4s">@ViewData["Title"]</h3>
+                                <p class="wow fadeInUp" data-wow-delay=".6s">
+                                    You have requested to log in with a recovery code. This login will not be remembered until you provide
+                                    an authenticator app code at log in or disable 2FA and log in again.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <form method="post" class="text-center">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Input.RecoveryCode"></label>
+                            <input asp-for="Input.RecoveryCode" class="form-control" autocomplete="off" />
+                            <span asp-validation-for="Input.RecoveryCode" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="theme-btn">CONTINUE</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

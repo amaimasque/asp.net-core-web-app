@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "View";
+    Layout = "_Layout";
+}
+@model UsersViewModel;
+<h3>Users Management</h3>
+<hr />
+<section>
+    <div class="row">
+        <div class="col-md-4">
+            @{
+                if (Model.SelectedUser != null)
+                {
+                    if (Model.DisplayMode == "ReadWrite")
+                    {
+                        await Html.RenderPartialAsync("_UpdateUserPartial", Model.SelectedUser);
+                    }
+                }
+                if (Model.DisplayMode == "WriteOnly")
+                {
+                    await Html.RenderPartialAsync("_CreateUserPartial", new CoreWebApp.Models.UsersWithRolesViewModel());
+                }
+            }
+        </div>
+        <div class="col-md-8">
+            <table class="table table-hover align-items-center table-flush dt-responsive nowrap" id="dataTableHover">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Username</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email Address</th>
+                        <th>Roles</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Users)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Roles)
+                            </td>
+                            <td>
+                                <a class="btn btn-outline-primary" href="/users/details/@item.UserId">View</a>
+                                <a class="btn btn-outline-primary
+                                   " href="/users/delete/@item.UserId">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    $(document).ready(function () {
+        $('#dataTableHover').DataTable();
+    });
+</script>
