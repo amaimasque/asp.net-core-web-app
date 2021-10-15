@@ -8,34 +8,46 @@ using Microsoft.EntityFrameworkCore;
 using CoreWebApp.Data;
 using CoreWebApp.Models;
 using System.IO;
+using CoreWebApp.Data.Repositories;
+using CoreWebApp.Data.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace CoreWebApp.Controllers
 {
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IRepositoryWrapper _repository;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ProductController(ApplicationDbContext context)
+        public ProductController(ApplicationDbContext context, IRepositoryWrapper repositoryWrapper, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _repository = repositoryWrapper;
+            _userManager = userManager;
         }
 
         // GET: Product
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> IndexAsync()
         {
-            return View("View", await _context.ProductModel.ToListAsync());
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+            return View("View", await _repository.Product.GetAllProductsByUserId(user.Id));
         }
 
         // GET: Product/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> DetailsAsync(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var productModel = await _context.ProductModel
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var productModel = await _repository.Product.GetProductByIdAsync(id);
             if (productModel == null)
             {
                 return NotFound();
@@ -60,28 +72,30 @@ namespace CoreWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Description,DisplayImage,UserID")] ProductModel productModel)
+        public async Task<IActionResult> Create([FromForm] ProductModel productModel)
         {
-            /**var filePath = Path.GetTempFileName();
-            using (var inputStream = new FileStream(filePath, FileMode.Create))
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
             {
-                // read file to stream
-                await Request.Form.Files["DisplayImage"].CopyToAsync(inputStream);
-                // stream to byte array
-                byte[] array = new byte[inputStream.Length];
-                productModel.DisplayImage = array;
-                inputStream.Seek(0, SeekOrigin.Begin);
-                inputStream.Read(array, 0, array.Length);
-                // get file name
-                string fName = Request.Form.Files["DisplayImage"].FileName;
-            }**/
-            Console.WriteLine(Request.Form.Files["DisplayImage"].FileName);
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+            var product = new ProductModel
+            {
+                Title = productModel.Title,
+                Description = productModel.Description,
+                UserID = user.Id
+            };
             if (ModelState.IsValid)
             {
-                
-                _context.Add(productModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                using (var stream = new MemoryStream())
+                {
+                    await Request.Form.Files["DisplayImage"].CopyToAsync(stream);
+                    product.DisplayImage = stream.ToArray();
+                }
+
+                _repository.Product.CreateProduct(product);
+                await _repository.SaveAsync();
+                return RedirectToAction("Index");
             }
             return View("Add");
         }
@@ -107,32 +121,32 @@ namespace CoreWebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,Description,DisplayImage,UserID")] ProductModel productModel)
-        {
-            if (id != productModel.ID)
+        public async Task<IActionResult> Edit([FromForm] ProductModel productModel)
+        {;
+            var selectedProduct = await _repository.Product.GetProductByIdAsync(productModel.ID);
+            if (selectedProduct == null)
             {
-                return NotFound();
+                return NotFound($"Product not found.");
             }
+            _repository.Product.UpdateProduct(productModel);
 
             if (ModelState.IsValid)
             {
-                try
+                using (var stream = new MemoryStream())
                 {
-                    _context.Update(productModel);
-                    await _context.SaveChangesAsync();
+                    await Request.Form.Files["DisplayImage"].CopyToAsync(stream);
+                    productModel.DisplayImage = stream.ToArray();
                 }
-                catch (DbUpdateConcurrencyException)
+
+                if(Request.Form.Files.Count == 0 || !Request.Form.Files.Where(item => item.Name == "DisplayImage").Any())
                 {
-                    if (!ProductModelExists(productModel.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    productModel.DisplayImage = selectedProduct.DisplayImage;
                 }
-                return RedirectToAction(nameof(Index));
+
+                productModel.UserID = selectedProduct.UserID;
+
+                await _repository.SaveAsync();
+                return RedirectToAction();
             }
             return View(productModel);
         }
@@ -163,7 +177,7 @@ namespace CoreWebApp.Controllers
             var productModel = await _context.ProductModel.FindAsync(id);
             _context.ProductModel.Remove(productModel);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index");
         }
 
         private bool ProductModelExists(int id)

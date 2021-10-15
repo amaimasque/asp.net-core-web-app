@@ -1,4 +1,6 @@
 using CoreWebApp.Data;
+using CoreWebApp.Data.Interfaces;
+using CoreWebApp.Data.Repositories;
 using CoreWebApp.Models;
 using CoreWebApp.Services;
 using CoreWebApp.Settings;
@@ -128,6 +130,10 @@ namespace CoreWebApp
                 options.AddPolicy("RequireNonAdminRole",
                     policy => policy.RequireRole("Member", "Basic"));
             });
+
+            // Repository
+            services.AddTransient<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddTransient<IProductRepository, ProductRepository>();
 
             // SMTP
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));

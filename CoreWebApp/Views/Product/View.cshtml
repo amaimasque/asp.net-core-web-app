@@ -1,15 +1,14 @@
-﻿@model IEnumerable<CoreWebApp.Models.ProductModel>
+﻿@model IEnumerable<ProductModel>
 
 @{
     ViewData["Title"] = "View";
     Layout = "_Layout";
 }
+<div class="py-3 d-flex align-items-center">
+    <h3 class="d-inline">Products List</h3>
+    <a class="btn btn-primary ml-2" asp-action="Create">Add New</a>
+</div>
 
-<h1>View</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -21,9 +20,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DisplayImage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserID)
             </th>
             <th></th>
         </tr>
@@ -38,10 +34,10 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DisplayImage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserID)
+                @if (item.DisplayImage != null)
+                {
+                    <img id="profilePicture" style="width:350px;height:350px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(item.DisplayImage))">
+                }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
